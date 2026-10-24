@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KillHit</title>
+    <script type="module" crossorigin src="/assets/index-C9pQ24uK.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CVoTceNx.css">
+  </head>
+  <body class="interface-open">
+    <!-- ============================================================ HOME -->
+    <section id="home-screen" class="screen active home-screen">
+      <div class="home-logo" aria-label="KillHit">
+        <span class="home-logo-mark">K</span>
+        <span class="home-logo-text">KILL<span>HIT</span></span>
+      </div>
+
+      <div class="home-layout">
+        <main class="home-stage">
+          <div class="home-player">
+            <input id="player-name" type="text" maxlength="14" autocomplete="off" spellcheck="false" aria-label="Player name" />
+            <div class="level-line">
+              <span id="profile-level" class="level-chip">LV 1</span>
+              <div class="xp-track"><div id="profile-xp-fill" class="xp-fill"></div></div>
+              <span id="profile-xp-text" class="xp-text">0 / 1000 XP</span>
+            </div>
+          </div>
+
+          <div class="home-character-wrap">
+            <canvas id="home-preview" aria-label="Player character preview"></canvas>
+            <div class="home-character-glow" aria-hidden="true"></div>
+          </div>
+
+          <div class="home-actions">
+            <button id="loadout-btn" class="btn btn-ghost">LOADOUT</button>
+            <button id="play-btn" class="btn btn-primary btn-play" disabled>
+              <span class="btn-label">PLAY</span>
+            </button>
+          </div>
+        </main>
+
+        <aside class="quest-panel">
+          <div class="quest-head">
+            <div>
+              <span class="quest-eyebrow">DAILY QUESTS</span>
+              <h2>EARN BONUS XP</h2>
+            </div>
+            <span id="daily-reset">RESET AT MIDNIGHT</span>
+          </div>
+          <div id="daily-tasks" class="daily-list"></div>
+          <p class="quest-foot">Quests reset every day. Complete them in any match.</p>
+        </aside>
+      </div>
+
+      <button id="settings-btn" class="gear-btn" aria-label="Settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.4 13a7.8 7.8 0 0 0 .05-1 7.8 7.8 0 0 0-.05-1l2.05-1.6-2-3.46-2.43.98a7.3 7.3 0 0 0-1.73-1L15 3.3h-4l-.3 2.62c-.63.26-1.21.6-1.73 1L6.55 5.94l-2 3.46L6.6 11a7.8 7.8 0 0 0-.05 1c0 .34.02.67.05 1l-2.05 1.6 2 3.46 2.43-.98c.52.42 1.1.76 1.73 1L11 20.7h4l.3-2.62c.63-.26 1.21-.6 1.73-1l2.43.98 2-3.46L19.4 13Zm-5.4 2a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg>
+      </button>
+    </section>
+
+    <!-- ========================================================= LOADOUT -->
+    <section id="loadout-screen" class="screen">
+      <header class="sub-header">
+        <button id="loadout-back" class="btn btn-ghost">‹ BACK</button>
+        <div>
+          <h1>LOADOUT</h1>
+          <p>SELECT YOUR STARTING WEAPON</p>
+        </div>
+        <div class="sub-header-spacer"></div>
+      </header>
+      <div id="loadout-cards" class="loadout-grid"></div>
+      <div class="loadout-foot">
+        <span>WEAPONS REMAIN SWITCHABLE IN-MATCH WITH <b>1</b> <b>2</b> <b>3</b> <b>4</b></span>
+        <button id="loadout-confirm" class="btn btn-primary">CONFIRM</button>
+      </div>
+    </section>
+
+    <!-- ==================================================== MATCHMAKING -->
+    <section id="matchmaking-screen" class="screen">
+      <div class="mm-found-wrap">
+        <div class="mm-found">MATCH FOUND</div>
+      </div>
+    </section>
+
+    <!-- ============================================================ HUD -->
+    <div id="hud" class="hud">
+      <div class="hud-top">
+        <div class="hud-timer-box">
+          <span class="hud-label">TIME</span>
+          <b id="hud-timer">10:00</b>
+        </div>
+        <div class="hud-stats">
+          <div><span class="hud-label">KILLS</span><b id="hud-kills">0</b></div>
+          <div><span class="hud-label">SCORE</span><b id="hud-score">0</b></div>
+        </div>
+      </div>
+
+      <div id="respawn-overlay" class="respawn-overlay">
+        <div class="respawn-inner">
+          <div class="respawn-text">YOU WERE KILLED</div>
+          <div class="respawn-count">RESPAWN IN <span id="respawn-count">3</span></div>
+        </div>
+      </div>
+
+      <div id="kill-feed" class="kill-feed"></div>
+
+      <div class="hud-left-bottom">
+        <div class="vitals-panel">
+          <div class="vitals-line">
+            <span class="hud-label">VITALS</span>
+            <span id="health-text">100 / 100</span>
+          </div>
+          <div id="health-container"><div id="health-bar-fill"></div></div>
+        </div>
+      </div>
+
+      <div class="hud-right-bottom">
+        <div class="weapon-panel">
+          <div class="weapon-meta"><span class="hud-label">WEAPON</span><b id="weapon-name">RIFLE</b></div>
+          <div id="ammo" class="ammo-readout">30 / 30</div>
+        </div>
+      </div>
+
+      <div id="crosshair"></div>
+      <div id="hitmarker"></div>
+      <div id="damage-arcs"></div>
+      <div id="damage-vignette"></div>
+      <div id="damage-flash" style="display: none"></div>
+
+      <div id="mute-indicator"></div>
+      <div id="capture-hint">CLICK TO CAPTURE MOUSE</div>
+      <div id="fps">FPS: 0</div>
+    </div>
+
+    <!-- ========================================================= RESULTS -->
+    <section id="results-screen" class="screen">
+      <div class="results-card">
+        <span class="eyebrow danger">MATCH COMPLETE</span>
+        <h1>MISSION REPORT</h1>
+        <div class="result-grid">
+          <div><span class="result-label">KILLS</span><b id="result-kills">0</b></div>
+          <div><span class="result-label">DEATHS</span><b id="result-deaths">0</b></div>
+          <div><span class="result-label">HEADSHOTS</span><b id="result-headshots">0</b></div>
+          <div><span class="result-label">SCORE</span><b id="result-score">0</b></div>
+        </div>
+        <div class="result-xp-row">
+          <span class="result-label">XP EARNED</span>
+          <b id="result-xp">+0 XP</b>
+          <span id="result-levelup" class="level-up">LEVEL UP</span>
+        </div>
+        <div class="result-tasks">
+          <span class="result-label">DAILY QUESTS</span>
+          <div id="result-task-list"></div>
+        </div>
+        <div class="result-actions">
+          <button id="play-again-btn" class="btn btn-primary">PLAY AGAIN</button>
+          <button id="result-main-menu" class="btn">MAIN MENU</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================== PAUSE -->
+    <section id="pause-menu" class="screen">
+      <div class="pause-card">
+        <span class="eyebrow">TACTICAL HOLD</span>
+        <h1>PAUSED</h1>
+        <button id="resume-btn" class="btn btn-primary">RESUME</button>
+        <button id="pause-settings-btn" class="btn">SETTINGS</button>
+        <button id="pause-main-menu" class="btn btn-ghost">MAIN MENU</button>
+      </div>
+    </section>
+
+    <!-- ======================================================== SETTINGS -->
+    <section id="settings-screen" class="screen">
+      <div class="settings-card">
+        <div class="panel-head">
+          <h1>SETTINGS</h1>
+          <span>OPERATOR PREFERENCES</span>
+        </div>
+        <div class="setting-row">
+          <label for="setting-sensitivity">MOUSE SENSITIVITY <b id="setting-sensitivity-value">4</b></label>
+          <input id="setting-sensitivity" type="range" min="1" max="10" step="1" value="4" />
+        </div>
+        <div class="setting-row">
+          <label for="setting-volume">MASTER VOLUME <b id="setting-volume-value">32%</b></label>
+          <input id="setting-volume" type="range" min="0" max="100" step="1" value="32" />
+        </div>
+        <div class="setting-row">
+          <span class="setting-label">GRAPHICS QUALITY</span>
+          <div class="quality-row" id="quality-row">
+            <button data-quality="low" class="quality-btn">LOW</button>
+            <button data-quality="medium" class="quality-btn">MEDIUM</button>
+            <button data-quality="high" class="quality-btn">HIGH</button>
+          </div>
+        </div>
+        <button id="settings-close" class="btn btn-primary">APPLY &amp; CLOSE</button>
+      </div>
+    </section>
+
+    <div id="toast" class="toast"></div>
+
+  </body>
+</html>

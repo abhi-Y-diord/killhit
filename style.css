@@ -1,0 +1,367 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: sans-serif;
+  background-color: #000;
+  user-select: none;
+}
+
+#instructions {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+#instructions h1 {
+  margin-top: 0;
+}
+
+#fps {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #0ff;
+  font-size: 20px;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 4px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+#crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  pointer-events: none;
+  box-shadow: 0 0 2px black;
+}
+
+#hitmarker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+#hitmarker::before, #hitmarker::after {
+  content: '';
+  position: absolute;
+  background-color: red;
+}
+
+#hitmarker::before {
+  top: 5px;
+  left: 0;
+  width: 12px;
+  height: 2px;
+}
+
+#hitmarker::after {
+  top: 0;
+  left: 5px;
+  width: 2px;
+  height: 12px;
+}
+
+#hitmarker.headshot::before,
+#hitmarker.headshot::after {
+  background-color: #dce6ef;
+  box-shadow: 0 0 6px #dce6ef;
+}
+
+#hitmarker.headshot {
+  transform: translate(-50%, -50%) scale(1.35);
+}
+
+#loading {
+  position: absolute;
+  inset: 0;
+  background: #0a0f15;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+}
+
+#loading p {
+  color: #a7b7c6;
+}
+
+#mute-indicator {
+  position: absolute;
+  top: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #dce6ef;
+  font-size: 14px;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 3px 10px;
+  border-radius: 4px;
+  z-index: 5;
+  pointer-events: none;
+  display: none;
+}
+
+#damage-arcs {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 110;
+}
+
+.dmg-arc {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 104px;
+  height: 30px;
+  margin: -15px 0 0 -52px;
+  border: 4px solid transparent;
+  border-top: 4px solid rgba(255, 64, 64, 0.95);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  filter: drop-shadow(0 0 6px rgba(255, 0, 0, 0.55));
+  transform-origin: 50% 50%;
+}
+
+#damage-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(120, 0, 0, 0) 52%,
+    rgba(120, 0, 0, 0.42) 88%,
+    rgba(90, 0, 0, 0.55) 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  z-index: 105;
+}
+
+#zoom-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  display: none;
+  pointer-events: none;
+  z-index: 5;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
+}
+
+#zoom-crosshair::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+}
+
+#pause-menu {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 14, 20, 0.82);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: white;
+  z-index: 250;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+#pause-menu.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#pause-menu h1 {
+  font-size: 46px;
+  margin-bottom: 10px;
+  letter-spacing: 4px;
+}
+
+#pause-menu button {
+  width: 220px;
+  padding: 12px 18px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  background: #b9c8d6;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#pause-menu button:hover {
+  background: #c8d5e0;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  font-size: 16px;
+}
+
+.slider-row input[type="range"] {
+  width: 180px;
+  cursor: pointer;
+}
+
+#sens-value {
+  width: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+#ammo {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 8px 16px;
+  border-radius: 6px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+#weapon-name {
+  position: absolute;
+  bottom: 70px;
+  right: 20px;
+  color: #dce6ef;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 4px 12px;
+  border-radius: 4px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+#scoreboard {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px 12px;
+  border-radius: 4px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+#health-container {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 200px;
+  height: 32px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 5;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#health-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #b9c8d6;
+  transition: width 0.2s ease;
+  z-index: 1;
+}
+
+#health-text {
+  position: relative;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 2;
+}
+
+#damage-flash {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 0, 0, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 100;
+  transition: opacity 0.1s ease;
+  display: none;
+}
+
+#death-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(100, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 36px;
+  font-weight: bold;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
