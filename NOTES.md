@@ -15,3 +15,10 @@
 - Shooting: crossed additive muzzle flash + short point light, smoke puffs, falling/bouncing brass, glowing tracers, metal sparks vs concrete dust impacts, short-lived bullet-hole decals, and wall light flicker.
 - Controls: WASD move, mouse look, click fire, right-click aim, R reload, 1/2/3/4 switch weapon, Shift hold breath while scoped (it no longer sprints while aiming), M mute, F3 hold for FPS, Esc pause. Pointer lock is best-effort; click the capture hint if the browser blocks it.
 - Profile data is stored under `killhit_profile_v1` with daily reset. Dev build: `npm run build` (Vite).
+
+## Fullscreen, browser chrome, lobby background, scope fix
+- PLAY requests fullscreen inside the click handler (with the webkit fallback); Main Menu exits fullscreen. Refusals are ignored.
+- Document-wide context menu/drag/selection blocking added. Right-click ADS still works, and text inputs remain usable.
+- Sniper scope now hides the first-person gun model while scoped. The scope centre is transparent with no blur/tint; only a thin black ring and outer vignette remain.
+- Interface screens share a blurred station photo background at /images/station-bg.jpg with a 35% dark overlay. If the file is missing, the dark blue-grey gradient fallback is used and one console warning is logged.
+- Replaced orange lobby surfaces with flat neutral panels, off-white text/PLAY, and a soft blue-grey accent. No images were generated.
